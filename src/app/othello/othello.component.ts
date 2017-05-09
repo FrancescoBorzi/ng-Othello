@@ -1,14 +1,13 @@
-import {Component} from "angular-ts-decorators";
+import {Component} from '@angular/core';
 import {OthelloHandlerService} from "./othello-handler.service";
 import {OthelloAIService} from "./othello-ai.service";
 
 @Component({
     selector: 'othello',
-    templateUrl: 'othello.component.html',
+    templateUrl: 'othello.component.html'
 })
-export class Othello {
+export class OthelloComponent {
 
-    private $ctrl: Othello;
     private handler: OthelloHandlerService;
     private ai: OthelloAIService;
 
@@ -19,10 +18,7 @@ export class Othello {
     private scoreBlack: number;
     private playing: boolean;
 
-
-    /*@ngInject*/
-    constructor(OthelloHandlerService: OthelloHandlerService, OthelloAIService: OthelloAIService, private $timeout) {
-        this.$ctrl = this; // not really needed, just a hint for the IDE
+    constructor(OthelloHandlerService: OthelloHandlerService, OthelloAIService: OthelloAIService) {
         this.handler = OthelloHandlerService;
         this.ai = OthelloAIService;
     }
@@ -30,7 +26,7 @@ export class Othello {
     /**
      * Automatically called when the component is initialised
      */
-    $onInit() {
+    ngOnInit() {
         this.matrix = [];
 
         this.turn = 1;
@@ -87,25 +83,25 @@ export class Othello {
         this.playing = false;
     }
 
-    select(x: number, y: number): void {
+    select(coord: Coord): void {
 
         if (this.turn == 1) {
 
-            if (typeof this.matrix[x] == 'undefined') {
+            if (typeof this.matrix[coord.x] === 'undefined') {
                 return;
             }
 
-            if (!this.handler.stepControl(this.matrix, x, y, 1)) {
+            if (!this.handler.stepControl(this.matrix, coord.x, coord.y, 1)) {
                 return;
             }
 
-            this.handler.stepProcess(this.matrix, x, y, 1);
+            this.handler.stepProcess(this.matrix, coord.x, coord.y, 1);
             this.scoreBlack = this.handler.calculateScore(this.matrix, 1);
             this.scoreWhite = this.handler.calculateScore(this.matrix, 2);
             this.turn = 2;
 
-            this.$timeout(() => {
-                this.cpuMove()
+            setTimeout(() => {
+                this.cpuMove();
             }, 1000);
         }
     }

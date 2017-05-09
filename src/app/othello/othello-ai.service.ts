@@ -1,7 +1,7 @@
-import { Injectable } from 'angular-ts-decorators';
+import {Injectable} from '@angular/core';
 import {OthelloHandlerService} from "./othello-handler.service";
 
-@Injectable('OthelloAIService')
+@Injectable()
 export class OthelloAIService {
 
     private handler: OthelloHandlerService;

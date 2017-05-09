@@ -1,6 +1,6 @@
-import {Injectable} from "angular-ts-decorators";
+import {Injectable} from '@angular/core';
 
-@Injectable('OthelloHandlerService')
+@Injectable()
 export class OthelloHandlerService {
 
     /**

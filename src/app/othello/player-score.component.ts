@@ -1,16 +1,10 @@
-import {Component, Input} from 'angular-ts-decorators';
+import {Component, Input} from '@angular/core';
 
 @Component({
-    selector: 'playerScore',
+    selector: 'player-score',
     templateUrl: 'player-score.component.html'
 })
 export class PlayerScoreComponent {
     @Input() playerId: number;
     @Input() score: number;
-
-    private $ctrl: PlayerScoreComponent;
-
-    constructor() {
-        this.$ctrl = this; // not really needed, just a hint for the IDE
-    }
 }

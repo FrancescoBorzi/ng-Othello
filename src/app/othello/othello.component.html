@@ -1,15 +1,15 @@
-<div ng-class="$ctrl.endingAnimation.cssClass">{{ $ctrl.endingAnimation.label }}</div>
+<div [ngClass]="endingAnimation.cssClass">{{ endingAnimation.label }}</div>
 
 <div class="row">
   <div class="col-xs-4">
-    <player-score player-id="1" score="$ctrl.scoreBlack"></player-score>
+    <player-score [playerId]="1" [score]="scoreBlack"></player-score>
   </div>
   <div class="col-xs-4">
-    <btn-start is-playing="$ctrl.playing" ng-click="$ctrl.startGame()"></btn-start>
+    <btn-start [isPlaying]="playing" (click)="startGame()"></btn-start>
   </div>
   <div class="col-xs-4">
-    <player-score player-id="2" score="$ctrl.scoreWhite"></player-score>
+    <player-score [playerId]="2" [score]="scoreWhite"></player-score>
   </div>
 </div>
 
-<othello-board matrix="$ctrl.matrix" is-playing="$ctrl.playing" on-selection="$ctrl.select(x, y)"></othello-board>
+<othello-board [matrix]="matrix" [isPlaying]="playing" (selection)="select($event)"></othello-board>

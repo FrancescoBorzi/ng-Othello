@@ -1,31 +1,27 @@
-import * as angular from "angular";
-import {ITimeoutService} from "angular";
-import {Component, Input, Output} from "angular-ts-decorators";
+import {Component, Input, Output, EventEmitter} from '@angular/core';
 import {OthelloHandlerService} from "./othello-handler.service";
 
 @Component({
-    selector: 'othelloBoard',
+    selector: 'othello-board',
     templateUrl: 'othello-board.component.html'
 })
-export class OthelloBoard {
-    @Output() onSelection: (Coord) => void;
+export class OthelloBoardComponent {
+    @Output() selection = new EventEmitter<Coord>();
     @Input() isPlaying: boolean;
     @Input() matrix: number[][];
 
-    private $ctrl: OthelloBoard;
     private highlights: boolean[];
     private handler: OthelloHandlerService;
 
-    /*@ngInject*/
-    constructor(OthelloHandlerService: OthelloHandlerService, private $timeout: ITimeoutService) {
-        this.$ctrl = this;  // not really needed, just a hint for the IDE
+    constructor(OthelloHandlerService: OthelloHandlerService) {
+
         this.handler = OthelloHandlerService;
     }
 
     /**
      * Automatically called when the component is initialised
      */
-    $onInit() {
+    ngOnInit() {
         this.highlights = [];
     }
 
@@ -72,21 +68,21 @@ export class OthelloBoard {
         if (this.isPlaying) {
             if (this.handler.stepControl(this.matrix, x, y, id)) {
                 // emit the selection event
-                this.onSelection({
+                this.selection.emit({
                     x: x,
                     y: y
                 });
             } else if (this.matrix[x][y] == 0) {
                 // show suggestions
                 let suggestions = this.handler.getSuggestions(this.matrix, id);
-                angular.forEach(suggestions, (suggestionCoords) => {
+                for (let suggestionCoords of suggestions) {
                     this.highlights[this.matrix.length * suggestionCoords.x + suggestionCoords.y] = true;
-                });
-                this.$timeout(() => {
+                }
+                setTimeout(() => {
                     // hide suggestions after a while
-                    angular.forEach(suggestions, (suggestionCoords) => {
+                    for (let suggestionCoords of suggestions) {
                         this.highlights[this.matrix.length * suggestionCoords.x + suggestionCoords.y] = false;
-                    });
+                    }
                 }, 500);
             }
         }
